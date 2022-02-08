@@ -54,11 +54,11 @@ function initMouse() {
     ];
 }
 // 设置相机
-function controlCamera({ lng, lat, alt }, { h, p, r }) {
+function controlCamera({ lng, lat, alt }, { h, p, r }, delay) {
     viewer.camera.flyTo({
         destination: Cesium.Cartesian3.fromDegrees(lng, lat, alt),
         orientation: new Cesium.HeadingPitchRoll.fromDegrees(h, p, r),
-        duration: 3,
+        duration: delay,
     });
 }
 // 加载模型
@@ -67,7 +67,7 @@ function createModel(model, { lng, lat, alt, heading = 0, pitch = 0, roll = 0 })
         Cesium.Cartesian3.fromDegrees(lng, lat, alt),
         new Cesium.HeadingPitchRoll(heading, pitch, roll)
     );
-    console.log(model,lng, lat, alt)
+    console.log(model, lng, lat, alt)
     let eneity = {
         id: model.id ? model.id : this.randomString(10),
         name: model.name,

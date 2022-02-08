@@ -8,6 +8,12 @@ import {
   controlCamera,
   createModel,
 } from "./CesiumTool/init";
+import {
+  leftDownAction,
+  mouseMoveAction,
+  leftUpAction,
+} from "./CesiumTool/dragModel.js";
+import initMouseEventHandler from './CesiumTool/mouseEvent'
 export default {
   name: "CesiumInstens",
   data() {
@@ -29,22 +35,24 @@ export default {
       name: "ciryMht",
       type: "city",
       position: {
-        lng: -74.0088130280024,
-        lat: 40.70714333714821,
+        lng: -74.01340883113373,
+        lat: 40.707910489413905,
         alt: 0,
-        heading:45
+        heading: 20.4,
       },
-      modelUrl:"../../../Model/manhatton.glb",
-      scale:0.8
+      modelUrl: "../../../Model/manhatton.glb",
+      scale: 0.75,
     };
-    return { position, hpr ,mhtModel};
+    return { position, hpr, mhtModel };
   },
-  methods: {},
   mounted() {
-    initCesiumInstens("base");
+    let viewer = initCesiumInstens("base");
     initMouse();
-    controlCamera(this.position, this.hpr);
-    createModel(this.mhtModel,this.mhtModel.position)
+    controlCamera(this.position, this.hpr, 0);
+    createModel(this.mhtModel, this.mhtModel.position);
+    // initMouseEventHandler(viewer,'leftDown',leftDownAction)
+    // initMouseEventHandler(viewer,'mouseMove',mouseMoveAction)
+    // initMouseEventHandler(viewer,'leftUp',leftUpAction)
   },
 };
 </script>
