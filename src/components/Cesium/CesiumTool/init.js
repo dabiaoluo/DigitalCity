@@ -6,25 +6,23 @@ function initCesiumInstens(containerId) {
     } else {
         viewer = new Cesium.Viewer(`${containerId}`, {
             animation: false,
-            baseLayerPicker: false,
-            fullscreenButton: false,
-            geocoder: false,
-            homeButton: false,
-            infoBox: false,
-            sceneModePicker: false,
-            selectionIndicator: false,
             timeline: false,
-            navigationHelpButton: false,
+            // baseLayerPicker: false,
+            // fullscreenButton: false,
+            // geocoder: false,
+            // homeButton: false,
+            // infoBox: false,
+            // sceneModePicker: false,
+            // selectionIndicator: false,
+            // navigationHelpButton: false,
             scene3DOnly: true,
-            shouleAnimate: true,
+            shouldAnimate: true,
             imageryProvider: new Cesium.ArcGisMapServerImageryProvider({
                 url: "https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer",
             })
         });
         // 左下角logo隐藏
         viewer._cesiumWidget._creditContainer.style.display = 'none'
-        // 开启高程
-        viewer.scene.globe.depthTestAgainstTerrain = true;
         return viewer
     }
 
@@ -54,21 +52,25 @@ function initMouse() {
     ];
 }
 // 设置相机
-function controlCamera({ lng, lat, alt }, { h, p, r }, delay) {
+function initCamera({ lng, lat, alt }, { heading, pitch, roll }, delay = 0) {
     viewer.camera.flyTo({
         destination: Cesium.Cartesian3.fromDegrees(lng, lat, alt),
-        orientation: new Cesium.HeadingPitchRoll.fromDegrees(h, p, r),
+        orientation: {
+            heading: Cesium.Math.toRadians(heading),
+            pitch: Cesium.Math.toRadians(pitch),
+            roll: Cesium.Math.toRadians(roll)
+        },
         duration: delay,
     });
 }
 // 加载模型
-function createModel(model, { lng, lat, alt, heading = 0, pitch = 0, roll = 0 }) {
+function initModel(model, { lng, lat, alt, heading, pitch, roll }) {
     let orientation = Cesium.Transforms.headingPitchRollQuaternion(
         Cesium.Cartesian3.fromDegrees(lng, lat, alt),
-        new Cesium.HeadingPitchRoll(heading, pitch, roll)
+        new Cesium.HeadingPitchRoll(Cesium.Math.toRadians(heading), Cesium.Math.toRadians(pitch), Cesium.Math.toRadians(roll))
     );
-    console.log(model, lng, lat, alt)
-    let eneity = {
+    // console.log(model, lng, lat, alt)
+    let entity = viewer.entities.add({
         id: model.id ? model.id : this.randomString(10),
         name: model.name,
         type: model.type,
@@ -78,14 +80,12 @@ function createModel(model, { lng, lat, alt, heading = 0, pitch = 0, roll = 0 })
             uri: model.modelUrl,
             scale: model.scale,
         },
-    };
-    // 加载模型
-    viewer.entities.add(eneity);
-    return eneity;
+    })
+    return entity;
 }
 export {
     initCesiumInstens,
     initMouse,
-    controlCamera,
-    createModel
+    initCamera,
+    initModel
 }
