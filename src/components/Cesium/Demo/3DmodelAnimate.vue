@@ -15,10 +15,10 @@ export default {
       name: "plane",
       type: "plane",
       modelUrl: "../../../Model/CesiumAir/Cesium_Air.glb",
-      scale: 1,
+      scale: 3,
       position: {
-        lng: 120.75046120224398,
-        lat: 31.303145756426073,
+        lng: 120.748172,
+        lat: 31.305359,
         alt: 200,
         heading: 0,
         pitch: 0,
@@ -28,13 +28,13 @@ export default {
     return { CesiumAir };
   },
   mounted() {
-    initCesiumInstens("baseDom");
+    let viewer = initCesiumInstens("baseDom");
     initMouse();
     initCamera(
       {
         lng: 120.75046120224398,
         lat: 31.303145756426073,
-        alt: 300,
+        alt: 500,
       },
       {
         heading: 305.86394568185557,
